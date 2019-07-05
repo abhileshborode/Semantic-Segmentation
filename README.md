@@ -1,6 +1,6 @@
 # Semantic Segmentation
 ### Introduction
-In this project, you'll label the pixels of a road in images using a Fully Convolutional Network (FCN).
+In this project, l label the pixels of a road in images using a Fully Convolutional Network (FCN).
 
 ### Setup
 ##### GPU
@@ -32,6 +32,9 @@ Here are examples of a sufficient vs. insufficient output from a trained network
 Sufficient Result          |  Insufficient Result
 :-------------------------:|:-------------------------:
 ![Sufficient](./examples/sufficient_result.png)  |  ![Insufficient](./examples/insufficient_result.png)
+
+
+#### Results
 
 
  

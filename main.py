@@ -10,9 +10,7 @@ from distutils.version import LooseVersion
 # global parameters 
 num_classes = 2
 image_shape = (160, 576)
-EPOCHS = 40
-BATCH_SIZE = 116
-DROPOUT = 0.75
+
 
 
 data_dir = './data'
@@ -21,7 +19,6 @@ training_dir ='./data/data_road/training'
 vgg_path = './data/vgg'
 
 
-correct_label = tf.placeholder(tf.float32, [None, image_shape[0], image_shape[1], num_classes])
 learning_rate = tf.placeholder(tf.float32)
 keep_prob = tf.placeholder(tf.float32)
 
@@ -130,8 +127,10 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     :param learning_rate: TF Placeholder for learning rate
     """
     # TODO: Implement function
+    sess.run(tf.global_variables_initializer())
+
     keep_prob_value = 0.5
-    learning_rate_value = 0.001
+    learning_rate_value = 0.0001
     for epoch in range(epochs):
       # Create function to get batches
       total_loss = 0
@@ -139,7 +138,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
 
           loss, _ = sess.run([cross_entropy_loss, train_op],
           feed_dict={input_image: X_batch, correct_label: gt_batch,
-          keep_prob: keep_prob_value, learning_rate:learning_rate_value})
+          keep_prob: 0.8, learning_rate:learning_rate_value})
 
           total_loss += loss;
 
@@ -155,6 +154,10 @@ def run():
     data_dir = './data'
     runs_dir = './runs'
 
+    number_of_epochs = 30
+    batch_size = 1
+    learning_rate = tf.constant(0.0001)
+
     # Download pretrained vgg model
     helper.maybe_download_pretrained_vgg(data_dir)
 
@@ -167,6 +170,8 @@ def run():
         vgg_path = os.path.join(data_dir, 'vgg')
         # Create function to get batches
         get_batches_fn = helper.gen_batch_function(os.path.join(data_dir, 'data_road/training'), image_shape)
+        correct_label = tf.placeholder(tf.float32, [None, image_shape[0], image_shape[1], num_classes])
+
 
         # OPTIONAL: Augment Images for better results
         #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
@@ -181,10 +186,8 @@ def run():
 
         logits, train_op, cross_entropy_loss = optimize(nn_last_layer, correct_label, learning_rate, num_classes)
 
-        sess.run(tf.global_variables_initializer())
-        sess.run(tf.local_variables_initializer())
 
-        train_nn(sess, EPOCHS, BATCH_SIZE, get_batches_fn, train_op, cross_entropy_loss, image_input, correct_label, keep_prob, learning_rate)
+        train_nn(sess, number_of_epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, image_input, correct_label, keep_prob, learning_rate)
 
 
         # TODO: Save inference data using helper.save_inference_samples
