@@ -36,7 +36,7 @@ Sufficient Result          |  Insufficient Result
 
 #### Results
 
-More results can be found [!Here}(./data/runs/)
+More results can be found [!Here](./data/runs/)
  
 ### Remarks
 - The link for the frozen `VGG16` model is hardcoded into `helper.py`.  The model can be found [here](https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/vgg.zip).
